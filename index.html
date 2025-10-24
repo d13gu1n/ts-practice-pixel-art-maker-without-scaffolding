@@ -1,60 +1,106 @@
 <html>
-    <head>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-            html, body {
-                height: auto;
-            }
-            body {
-                background: #fff;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-            }
-            .opts {
-                padding: 20px;
-                margin-bottom: 20px;
-                display: flex;
-                align-items: center;
-            }
-            .btn, .clr, .sz {
-                height: 30px;
-                padding: 0 20px;
-            }
-            .clr {
-                width: 100px;
-                margin: 0 40px;
-            }
-            .grid {
-                --sz: 4;
-                background: #000;
-                width: 100vh;
-                height: 85vh;
-                display: grid;
-                grid-template-columns: repeat(var(--sz), 1fr);
-                grid-template-rows: repeat(var(--sz), 1fr);
-                gap: 3px;
-                padding: 3px;
-            }
-            .cell {
-                background: #393939;
-                border-radius: 2px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="opts">
-            <!-- TODO: Pixel Art Maker - Continue HTML Code -->
-        </div>
-        <!-- TODO: Paste JS code generated bt TSC here -->
-        <script>
-            // TODO: Write TS code here...
-            console.log("This is TS");
-        </script>
-    </body>
+  <head>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: auto;
+      }
+      body {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      .opts {
+        padding: 20px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+      .btn,
+      .clr,
+      .sz {
+        height: 30px;
+        padding: 0 20px;
+      }
+      .clr {
+        width: 100px;
+        margin: 0 40px;
+      }
+      .grid {
+        --sz: 4;
+        background: #000;
+        width: 100vh;
+        height: 85vh;
+        display: grid;
+        grid-template-columns: repeat(var(--sz), 1fr);
+        grid-template-rows: repeat(var(--sz), 1fr);
+        gap: 3px;
+        padding: 3px;
+      }
+      .cell {
+        background: #393939;
+        border-radius: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="opts">
+      <button class="btn">Reset</button>
+      <input type="color" value="#ffa500" class="clr" />
+      <input type="number" value="20" class="sz" />
+    </div>
+    <div class="grid"></div>
+    <script defer>
+      const gCont = document.querySelector(".grid");
+      const gSize = document.querySelector(".sz");
+      const gColor = document.querySelector(".clr");
+      const gReset = document.querySelector(".btn");
+      if (!gCont || !gSize || !gColor || !gReset) {
+        throw new Error("Missing required DOM elements");
+      }
+      let gridSize = parseInt(gSize.value);
+      let isDrawing = false;
+      function createGrid() {
+        gCont.style.setProperty("--sz", gridSize.toString());
+        gCont.innerHTML = "";
+        for (let i = 0; i < gridSize * gridSize; i++) {
+          const cell = document.createElement("div");
+          cell.classList.add("cell");
+          cell.addEventListener("mouseenter", () => paintCell(cell));
+          cell.addEventListener("mousedown", () => clickCell(cell));
+          gCont.appendChild(cell);
+        }
+      }
+      function paintCell(cell) {
+        if (!isDrawing) return;
+        cell.style.backgroundColor = gColor.value;
+      }
+      function clickCell(cell) {
+        cell.style.backgroundColor = gColor.value;
+      }
+      window.addEventListener("mousedown", () => {
+        isDrawing = true;
+      });
+      window.addEventListener("mouseup", () => {
+        isDrawing = false;
+      });
+      function resetGrid() {
+        createGrid();
+      }
+      gReset.addEventListener("click", resetGrid);
+      gSize.addEventListener("change", () => {
+        gridSize = parseInt(gSize.value);
+        resetGrid();
+      });
+      createGrid();
+      //# sourceMappingURL=codes.js.map
+    </script>
+  </body>
 </html>
